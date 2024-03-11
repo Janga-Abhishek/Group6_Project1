@@ -1,5 +1,6 @@
 package com.example.group6_project1
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
+
 class CandidateAdapter (options: FirebaseRecyclerOptions<Candidate>)  : FirebaseRecyclerAdapter<Candidate, CandidateAdapter.MyViewHolder>(options)
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -22,15 +24,26 @@ class CandidateAdapter (options: FirebaseRecyclerOptions<Candidate>)  : Firebase
         Log.d("CandidateAdapter", "onBindViewHolder - position: $position, Name: ${model.Name}")
 
         holder.txtName.text=model.Name
-        holder.txtEducation.text=model.Education
+        holder.txtEducation.text=model.Job
         val storageReference: StorageReference = FirebaseStorage.getInstance().getReferenceFromUrl(model.Photo)
         Glide.with(holder.imageView.context).load(storageReference).into(holder.imageView)
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, DetailActivity::class.java)
+            intent.putExtra("Name", model.Name)
+            intent.putExtra("Job", model.Job)
+            intent.putExtra("Photo", model.Photo)
+            intent.putExtra("WorkExperience", model.Work_experience)
+            intent.putExtra("Education", model.Education)
+            holder.itemView.context.startActivity(intent)
+        }
+
     }
     class MyViewHolder(inflater : LayoutInflater, parent: ViewGroup)
         : RecyclerView.ViewHolder(inflater.inflate(R.layout.connect_candidate_main_row,parent,false))
     {
         val txtName : TextView =itemView.findViewById(R.id.user_name)
-        val txtEducation : TextView =itemView.findViewById(R.id.education)
+        val txtEducation : TextView =itemView.findViewById(R.id.job_detail)
         val imageView: ImageView = itemView.findViewById(R.id.candidateImage)
     }
 }

@@ -38,13 +38,13 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/candidateImageDetail"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 app:srcCompat="@drawable/user" />
 
             <Button
-                android:id="@+id/connect"
+                android:id="@+id/connect_btn"
                 android:layout_width="179dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="270dp"
@@ -69,7 +69,7 @@
 
 
                 <TextView
-                    android:id="@+id/education"
+                    android:id="@+id/job_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Software Engineer | Open to Opportunities"
