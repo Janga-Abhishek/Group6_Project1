@@ -21,7 +21,7 @@
 
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/candidateImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 app:srcCompat="@drawable/user" />
@@ -43,7 +43,7 @@
 
 
                 <TextView
-                    android:id="@+id/headline"
+                    android:id="@+id/education"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Software Engineer | Open to Opportunities"
