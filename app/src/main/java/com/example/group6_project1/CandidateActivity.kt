@@ -1,6 +1,7 @@
 package com.example.group6_project1
 
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,10 @@ class CandidateActivity : AppCompatActivity(){
         val rView: RecyclerView = findViewById(R.id.rView)
         rView.layoutManager = LinearLayoutManager(this)
         rView.adapter = adapter
+        val backButton: ImageButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     override fun onStart() {

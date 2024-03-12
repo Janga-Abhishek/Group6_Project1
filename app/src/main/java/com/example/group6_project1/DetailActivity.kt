@@ -40,7 +40,7 @@ class DetailActivity : AppCompatActivity() {
         workExperienceDetail.text = candidateWorkExperience
         educationDetail.text = candidateEducation
 
-        val storageReference: StorageReference? = candidatePhoto?.let { FirebaseStorage.getInstance().getReferenceFromUrl(it)
+        val storageReference: StorageReference? = candidatePhoto?.let { FirebaseStorage.getInstance().getReference("profile_images/$it")
         }
         storageReference?.let {Glide.with(this).load(it).into(candidateImageDetail)
         }

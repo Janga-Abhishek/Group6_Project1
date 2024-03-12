@@ -24,8 +24,14 @@ class CandidateAdapter (options: FirebaseRecyclerOptions<Candidate>)  : Firebase
         Log.d("CandidateAdapter", "onBindViewHolder - position: $position, Name: ${model.Name}")
 
         holder.txtName.text=model.Name
-        holder.txtEducation.text=model.Job
-        val storageReference: StorageReference = FirebaseStorage.getInstance().getReferenceFromUrl(model.Photo)
+        holder.txtJob.text=model.Job
+        holder.txtEducation.text=model.Education
+        holder.txtCompany.text=model.Company
+//        val storageReference: StorageReference = FirebaseStorage.getInstance().getReferenceFromUrl(model.Photo)
+//        Glide.with(holder.imageView.context).load(storageReference).into(holder.imageView)
+
+        val storageReference: StorageReference =
+            FirebaseStorage.getInstance().getReference("profile_images/${model.Photo}")
         Glide.with(holder.imageView.context).load(storageReference).into(holder.imageView)
 
         holder.itemView.setOnClickListener {
@@ -43,7 +49,9 @@ class CandidateAdapter (options: FirebaseRecyclerOptions<Candidate>)  : Firebase
         : RecyclerView.ViewHolder(inflater.inflate(R.layout.connect_candidate_main_row,parent,false))
     {
         val txtName : TextView =itemView.findViewById(R.id.user_name)
-        val txtEducation : TextView =itemView.findViewById(R.id.job_detail)
+        val txtJob : TextView =itemView.findViewById(R.id.job_detail)
+        val txtEducation: TextView =itemView.findViewById(R.id.education)
+        val txtCompany: TextView =itemView.findViewById(R.id.company)
         val imageView: ImageView = itemView.findViewById(R.id.candidateImage)
     }
 }

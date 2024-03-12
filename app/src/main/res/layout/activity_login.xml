@@ -26,16 +26,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="User Name" />
+                    android:text="Email" />
 
                 <EditText
-                    android:id="@+id/editTextText"
+                    android:id="@+id/login_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="User Name"
-                    android:inputType="text" />
+                    android:hint="Email"
+                    android:inputType="text"
+                    android:minHeight="48dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -51,20 +52,27 @@
                     android:text="Password" />
 
                 <EditText
-                    android:id="@+id/editTextText2"
+                    android:id="@+id/login_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="Password"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:minHeight="48dp" />
             </LinearLayout>
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Login" />
+
+            <Button
+                android:id="@+id/register"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Register" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

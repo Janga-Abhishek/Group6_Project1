@@ -42,6 +42,7 @@ dependencies{
 }
 dependencies {
 
+    implementation("com.google.firebase:firebase-auth:22.3.1")
     implementation("com.google.firebase:firebase-firestore:24.10.3")
     implementation("com.google.firebase:firebase-database:20.3.1")
     implementation("androidx.core:core-ktx:1.9.0")
