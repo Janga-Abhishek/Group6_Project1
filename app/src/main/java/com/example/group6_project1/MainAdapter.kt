@@ -10,16 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
-
-class CandidateAdapter (options: FirebaseRecyclerOptions<Candidate>)  : FirebaseRecyclerAdapter<Candidate, CandidateAdapter.MyViewHolder>(options)
-{
-    private lateinit var currentUserID: String
-
+class MainAdapter(options: FirebaseRecyclerOptions<Candidate>) :
+    FirebaseRecyclerAdapter<Candidate, MainAdapter.MyViewHolder>(options) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return  MyViewHolder(inflater,parent)
@@ -38,20 +33,6 @@ class CandidateAdapter (options: FirebaseRecyclerOptions<Candidate>)  : Firebase
             FirebaseStorage.getInstance().getReference("profile_images/${model.Photo}")
         Glide.with(holder.imageView.context).load(storageReference).into(holder.imageView)
 
-
-        var auth = FirebaseAuth.getInstance()
-        currentUserID = auth.currentUser?.uid ?: ""
-        val candidateID = getRef(position).key
-        val friendsReference =
-            FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends")
-
-        friendsReference.child(candidateID!!).get().addOnSuccessListener {
-            if (it.exists()) {
-                holder.txtStatus.text = "Connected"
-            } else {
-                holder.txtStatus.text = ""
-            }
-        }
         holder.itemView.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailActivity::class.java)
             intent.putExtra("Name", model.Name)
@@ -66,13 +47,12 @@ class CandidateAdapter (options: FirebaseRecyclerOptions<Candidate>)  : Firebase
 
     }
     class MyViewHolder(inflater : LayoutInflater, parent: ViewGroup)
-        : RecyclerView.ViewHolder(inflater.inflate(R.layout.connect_candidate_main_row,parent,false))
+        : RecyclerView.ViewHolder(inflater.inflate(R.layout.candidate_row,parent,false))
     {
         val txtName : TextView =itemView.findViewById(R.id.user_name)
         val txtJob : TextView =itemView.findViewById(R.id.job_detail)
         val txtEducation: TextView =itemView.findViewById(R.id.education)
         val txtCompany: TextView =itemView.findViewById(R.id.company)
         val imageView: ImageView = itemView.findViewById(R.id.candidateImage)
-        val txtStatus: TextView = itemView.findViewById(R.id.status)
     }
 }

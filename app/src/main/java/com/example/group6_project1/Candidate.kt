@@ -7,5 +7,5 @@ data class Candidate(
     var Company: String = "",
     var Connections: Int = 0,
     var Job: String = "",
-    var Work_experience: String = ""
+    var Work_experience: String = "",
 )

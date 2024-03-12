@@ -75,6 +75,15 @@
                         android:text="qualification" />
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textAlignment="textEnd"
+                    android:textColor="@android:color/holo_green_dark"
+                    android:textSize="9sp" />
+
 
             </LinearLayout>
 
