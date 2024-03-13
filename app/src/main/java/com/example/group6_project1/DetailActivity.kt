@@ -91,10 +91,8 @@ class DetailActivity : AppCompatActivity() {
         friendsRef.child(candidateID).setValue(candidateDetails)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Update the connection status in SharedPreferences
                     preferences.edit().putBoolean("Connection_$candidateID", true).apply()
 
-                    // Update UI
                     connectBtn.text = "Connected"
                     connectBtn.isEnabled = false
                     removeFriendBtn.text = "Remove Friend"
