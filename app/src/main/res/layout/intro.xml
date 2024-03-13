@@ -33,7 +33,7 @@
         android:id="@+id/main_img"
         android:layout_width="match_parent"
         android:layout_height="196dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="150dp"
         app:srcCompat="@drawable/group6_transparent" />
 
     <TextView

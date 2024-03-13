@@ -92,7 +92,6 @@ class DetailActivity : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     preferences.edit().putBoolean("Connection_$candidateID", true).apply()
-
                     connectBtn.text = "Connected"
                     connectBtn.isEnabled = false
                     removeFriendBtn.text = "Remove Friend"
