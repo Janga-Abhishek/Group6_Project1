@@ -18,7 +18,7 @@ import com.google.firebase.storage.StorageReference
 
 class CandidateAdapter (options: FirebaseRecyclerOptions<Candidate>)  : FirebaseRecyclerAdapter<Candidate, CandidateAdapter.MyViewHolder>(options)
 {
-    private lateinit var currentUserID: String
+    private var currentUserID: String = ""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -63,7 +63,6 @@ class CandidateAdapter (options: FirebaseRecyclerOptions<Candidate>)  : Firebase
 
             holder.itemView.context.startActivity(intent)
         }
-
     }
     class MyViewHolder(inflater : LayoutInflater, parent: ViewGroup)
         : RecyclerView.ViewHolder(inflater.inflate(R.layout.connect_candidate_main_row,parent,false))

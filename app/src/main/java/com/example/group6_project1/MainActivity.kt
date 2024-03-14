@@ -11,9 +11,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var auth: FirebaseAuth
+    private var auth: FirebaseAuth? = null
     private var mainAdapter: MainAdapter? = null
-    private lateinit var currentUserID: String
+    private var currentUserID: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,13 +28,13 @@ class MainActivity : AppCompatActivity() {
 
         val logoutButton: Button = findViewById(R.id.logout)
         logoutButton.setOnClickListener {
-            auth.signOut()
+            auth?.signOut()
 
             val intent = Intent(this, Login::class.java)
             startActivity(intent)
             finish()
         }
-        currentUserID = auth.currentUser?.uid ?: ""
+        currentUserID = auth?.currentUser?.uid ?: ""
         val query = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends")
         val options = FirebaseRecyclerOptions.Builder<Candidate>().setQuery(query, Candidate::class.java).build()
 

@@ -1,5 +1,6 @@
 package com.example.group6_project1
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -11,21 +12,20 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import android.content.SharedPreferences
 
 class DetailActivity : AppCompatActivity() {
 
-    private lateinit var candidateImageDetail: ImageView
-    private lateinit var connectBtn: Button
-    private lateinit var removeFriendBtn: Button
-    private lateinit var userName: TextView
-    private lateinit var jobDetail: TextView
-    private lateinit var workExperienceDetail: TextView
-    private lateinit var educationDetail: TextView
+    private var candidateImageDetail: ImageView? = null
+    private var connectBtn: Button? = null
+    private var removeFriendBtn: Button? = null
+    private var userName: TextView? = null
+    private var jobDetail: TextView? = null
+    private var workExperienceDetail: TextView? = null
+    private var educationDetail: TextView? = null
 
-    private lateinit var currentUserID: String
-    private lateinit var candidateID: String
-    private lateinit var preferences: SharedPreferences
+    private var currentUserID: String = ""
+    private var candidateID: String = ""
+    private var preferences: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,36 +45,34 @@ class DetailActivity : AppCompatActivity() {
         val candidateWorkExperience = intent.getStringExtra("WorkExperience")
         val candidateEducation = intent.getStringExtra("Education")
 
-        userName.text = candidateName
-        jobDetail.text = candidateJob
-        workExperienceDetail.text = candidateWorkExperience
-        educationDetail.text = candidateEducation
+        userName?.text = candidateName
+        jobDetail?.text = candidateJob
+        workExperienceDetail?.text = candidateWorkExperience
+        educationDetail?.text = candidateEducation
 
-        val storageReference: StorageReference? = candidatePhoto?.let { FirebaseStorage.getInstance().getReference("profile_images/$it")
-        }
-        storageReference?.let {Glide.with(this).load(it).into(candidateImageDetail)
-        }
+        val storageReference: StorageReference? = candidatePhoto?.let { FirebaseStorage.getInstance().getReference("profile_images/$it") }
+        storageReference?.let { Glide.with(this).load(it).into(candidateImageDetail!!) }
 
-        var auth = FirebaseAuth.getInstance()
+        val auth = FirebaseAuth.getInstance()
         currentUserID = auth.currentUser?.uid ?: ""
         candidateID = intent.getStringExtra("CandidateID") ?: ""
         preferences = getPreferences(MODE_PRIVATE)
 
-        connectBtn.setOnClickListener {
+        connectBtn?.setOnClickListener {
             addCandidateToFriends()
         }
 
-        removeFriendBtn.setOnClickListener {
+        removeFriendBtn?.setOnClickListener {
             removeFriend()
         }
 
-        val connectionStatus = preferences.getBoolean("Connection_$candidateID", false)
-        if (connectionStatus) {
-            connectBtn.text = "Connected"
-            connectBtn.isEnabled = false
+        val connectionStatus = preferences?.getBoolean("Connection_$candidateID", false)
+        if (connectionStatus == true) {
+            connectBtn?.text = "Connected"
+            connectBtn?.isEnabled = false
         } else {
-            removeFriendBtn.text = "Remove Friend"
-            removeFriendBtn.isEnabled = false
+            removeFriendBtn?.text = "Remove Friend"
+            removeFriendBtn?.isEnabled = false
         }
     }
 
@@ -82,20 +80,20 @@ class DetailActivity : AppCompatActivity() {
         val friendsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends")
 
         val candidateDetails = HashMap<String, Any>()
-        candidateDetails["Name"] = userName.text.toString()
-        candidateDetails["Job"] = jobDetail.text.toString()
-        candidateDetails["WorkExperience"] = workExperienceDetail.text.toString()
-        candidateDetails["Education"] = educationDetail.text.toString()
+        candidateDetails["Name"] = userName?.text.toString()
+        candidateDetails["Job"] = jobDetail?.text.toString()
+        candidateDetails["WorkExperience"] = workExperienceDetail?.text.toString()
+        candidateDetails["Education"] = educationDetail?.text.toString()
         candidateDetails["Photo"] = intent.getStringExtra("Photo") ?: ""
 
         friendsRef.child(candidateID).setValue(candidateDetails)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    preferences.edit().putBoolean("Connection_$candidateID", true).apply()
-                    connectBtn.text = "Connected"
-                    connectBtn.isEnabled = false
-                    removeFriendBtn.text = "Remove Friend"
-                    removeFriendBtn.isEnabled = true
+                    preferences?.edit()?.putBoolean("Connection_$candidateID", true)?.apply()
+                    connectBtn?.text = "Connected"
+                    connectBtn?.isEnabled = false
+                    removeFriendBtn?.text = "Remove Friend"
+                    removeFriendBtn?.isEnabled = true
                 } else {
                     Toast.makeText(this, "Failed to connect. Please try again.", Toast.LENGTH_SHORT).show()
                 }
@@ -107,11 +105,11 @@ class DetailActivity : AppCompatActivity() {
         friendsRef.child(candidateID).removeValue()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    preferences.edit().putBoolean("Connection_$candidateID", false).apply()
-                    connectBtn.text = "Connect"
-                    connectBtn.isEnabled = true
-                    removeFriendBtn.text = "Remove Friend"
-                    removeFriendBtn.isEnabled = false
+                    preferences?.edit()?.putBoolean("Connection_$candidateID", false)?.apply()
+                    connectBtn?.text = "Connect"
+                    connectBtn?.isEnabled = true
+                    removeFriendBtn?.text = "Remove Friend"
+                    removeFriendBtn?.isEnabled = false
                 } else {
                     Toast.makeText(this, "Failed to remove friend. Please try again.", Toast.LENGTH_SHORT).show()
                 }

@@ -16,12 +16,12 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 class Register : AppCompatActivity() {
-    private lateinit var auth: FirebaseAuth
-    private lateinit var database: FirebaseDatabase
-    private lateinit var storage: FirebaseStorage
-    private lateinit var storageReference: StorageReference
-    private lateinit var selectedImageUri: String
-    private lateinit var profileImage: String
+    private var auth: FirebaseAuth? = null
+    private var database: FirebaseDatabase? = null
+    private var storage: FirebaseStorage? = null
+    private var storageReference: StorageReference? = null
+    private var selectedImageUri: String = ""
+    private var profileImage: String = ""
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -38,7 +38,7 @@ class Register : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
         storage = FirebaseStorage.getInstance()
-        storageReference = storage.reference
+        storageReference = storage?.reference
 
         val btnChooseImage = findViewById<Button>(R.id.button_choose_image)
         btnChooseImage.setOnClickListener {
@@ -76,10 +76,10 @@ class Register : AppCompatActivity() {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
             return
         }
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
+        auth?.createUserWithEmailAndPassword(email, password)
+            ?.addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val userId = auth.currentUser?.uid ?: ""
+                    val userId = auth?.currentUser?.uid ?: ""
                     profileImage = "$userId.jpg"
                     saveUserDataToDatabase(userId, name, email, company, job, education, workExperience, profileImage)
                     uploadProfileImage(userId)
@@ -97,26 +97,26 @@ class Register : AppCompatActivity() {
             }
     }
     private fun saveUserDataToDatabase(userId: String, name: String, email: String, company: String, job: String, education: String, workExperience: String, profileImage: String ) {
-        val userRef = database.reference.child("Candidates").child(userId)
-        userRef.child("Name").setValue(name)
-        userRef.child("Email").setValue(email)
-        userRef.child("Company").setValue(company)
-        userRef.child("Job").setValue(job)
-        userRef.child("Education").setValue(education)
-        userRef.child("Work_experience").setValue(workExperience)
-        userRef.child("Photo").setValue(profileImage)
+        val userRef = database?.reference?.child("Candidates")?.child(userId)
+        userRef?.child("Name")?.setValue(name)
+        userRef?.child("Email")?.setValue(email)
+        userRef?.child("Company")?.setValue(company)
+        userRef?.child("Job")?.setValue(job)
+        userRef?.child("Education")?.setValue(education)
+        userRef?.child("Work_experience")?.setValue(workExperience)
+        userRef?.child("Photo")?.setValue(profileImage)
     }
     private fun uploadProfileImage(userId: String) {
-        val profileImage = storageReference.child("profile_images").child("$userId.jpg")
-        val uploadTask = profileImage.putFile(selectedImageUri.toUri())
-        uploadTask.continueWithTask { task ->
+        val profileImage = storageReference?.child("profile_images")?.child("$userId.jpg")
+        val uploadTask = profileImage?.putFile(selectedImageUri.toUri())
+        uploadTask?.continueWithTask { task ->
             if (!task.isSuccessful) {
                 task.exception?.let {
                     throw it
                 }
             }
             profileImage.downloadUrl
-        }.addOnCompleteListener { task ->
+        }?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 val downloadUri = task.result.toString()
             }
