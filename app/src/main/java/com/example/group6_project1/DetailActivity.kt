@@ -75,7 +75,7 @@ class DetailActivity : AppCompatActivity() {
         removeFriendBtn?.setOnClickListener {
             removeFriend()
         }
-        val connectionsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends")
+        val connectionsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child("friendsList")
         connectionsRef.child(candidateID).get().addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
                 connectBtn?.text = "Connected"
@@ -123,7 +123,7 @@ class DetailActivity : AppCompatActivity() {
         rView.adapter = detailAdapter
     }
     private fun addCandidateToFriends() {
-        val friendsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends")
+        val friendsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child("friendsList")
 
         val candidateDetails = HashMap<String, Any>()
         candidateDetails["Name"] = userName?.text.toString()
@@ -131,11 +131,6 @@ class DetailActivity : AppCompatActivity() {
         candidateDetails["WorkExperience"] = workExperienceDetail?.text.toString()
         candidateDetails["Education"] = educationDetail?.text.toString()
         candidateDetails["Photo"] = intent.getStringExtra("Photo") ?: ""
-
-
-
-
-
 
         friendsRef.child(candidateID).setValue(candidateDetails)
             .addOnCompleteListener { task ->
@@ -146,7 +141,7 @@ class DetailActivity : AppCompatActivity() {
                     removeFriendBtn?.text = "Remove Friend"
                     removeFriendBtn?.isEnabled = true
 
-                    val postsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child(candidateID).child("FriendsPosts")
+                    val postsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child("FriendsPosts")
                     val query = FirebaseDatabase.getInstance().reference.child("Candidates").child(candidateID).child("Posts")
                     query.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -167,7 +162,8 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
 
-        val intent = Intent(this, FriendsActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("candidateID", candidateID)
         startActivity(intent)
     }
 
@@ -198,7 +194,7 @@ class DetailActivity : AppCompatActivity() {
 //    }
 
     private fun removeFriend() {
-        val friendsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends")
+        val friendsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child("friendsList")
         friendsRef.child(candidateID).removeValue()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -208,24 +204,41 @@ class DetailActivity : AppCompatActivity() {
                     removeFriendBtn?.text = "Remove Friend"
                     removeFriendBtn?.isEnabled = false
 
-
                     val friendsPostsRef = friendsRef.child("FriendsPosts")
                     friendsPostsRef.child(candidateID).removeValue()
                         .addOnCompleteListener { postTask ->
                             if (postTask.isSuccessful) {
-                                // Friend's posts removed successfully
+                                val query = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child("FriendsPosts")
+                                query.addListenerForSingleValueEvent(object : ValueEventListener {
+                                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                        for (postSnapshot in dataSnapshot.children) {
+                                            val postId = postSnapshot.key
+                                            val postRef = query.child(postId!!)
+                                            Log.d("PostRef", postRef.toString())
+                                            val candidateIdValue = postSnapshot.child("candidateId").getValue(String::class.java)
+                                            if (candidateIdValue == candidateID) {
+                                                postRef.removeValue()
+                                            }
+                                        }
+                                    }
+
+                                    override fun onCancelled(databaseError: DatabaseError) {
+                                        // Handle error
+                                    }
+                                })
+                                val intent = Intent(this, MainActivity::class.java)
+                                intent.putExtra("candidateID", candidateID)
+                                startActivity(intent)
                             } else {
                                 // Handle failure to remove friend's posts
                                 Log.e("RemoveFriendPosts", "Failed to remove friend's posts: ${postTask.exception}")
                             }
                         }
-
-
                 } else {
                     Toast.makeText(this, "Failed to remove friend. Please try again.", Toast.LENGTH_SHORT).show()
                 }
             }
-           }
+    }
     override fun onStart() {
         super.onStart()
         detailAdapter?.startListening()

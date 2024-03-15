@@ -8,16 +8,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 class MainActivity : AppCompatActivity() {
     private var auth: FirebaseAuth? = null
     private var mainAdapter: MainAdapter? = null
     private var currentUserID: String = ""
-    private var CandidateIds: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,48 +40,22 @@ class MainActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         currentUserID = auth?.currentUser?.uid ?: ""
-        val friendsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends")
 
-        friendsRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val candidateIds = mutableListOf<String>()
-                for (friendSnapshot in dataSnapshot.children) {
-                    val candidateID = friendSnapshot.key
-                    candidateID?.let { candidateIds.add(it) }
-                    Log.d("CandidateIds", candidateIds.toString())
+        val rView: RecyclerView = findViewById(R.id.rView)
+        rView.layoutManager = LinearLayoutManager(this)
 
+        val intent = intent
+        val candidateID = intent.getStringExtra("candidateID")
 
-                    // Update this path to point to your posts
-                    for (candidateId in candidateIds) {
-                        val query = FirebaseDatabase.getInstance().reference
-                            .child("Candidates")
-                            .child(currentUserID)
-                            .child("friends")
-                            .child(candidateId)
-                            .child("FriendsPosts")
+        // Update this path to point to your posts
+        val query = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child("FriendsPosts")
+        Log.d("Query", query.toString())
 
-                        val options = FirebaseRecyclerOptions.Builder<Post>().setQuery(query, Post::class.java).build()
-                        mainAdapter = MainAdapter(options)
-
-                        Log.d("Query1", query.toString())
+        val options = FirebaseRecyclerOptions.Builder<Post>().setQuery(query, Post::class.java).build()
 
 
-
-                }
-                    val rView: RecyclerView = findViewById(R.id.rView)
-                    rView.layoutManager = LinearLayoutManager(this@MainActivity)
-
-
-                    rView.adapter = mainAdapter
-            }}
-
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Handle errors
-                Log.e("FirebaseError", "Error: ${databaseError.message}")
-            }
-        })
-
+        mainAdapter = MainAdapter(options)
+        rView.adapter = mainAdapter
     }
 
     override fun onStart() {

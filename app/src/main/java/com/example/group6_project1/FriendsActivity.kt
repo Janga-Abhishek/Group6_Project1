@@ -42,7 +42,7 @@ class FriendsActivity : AppCompatActivity() {
             finish()
         }
         currentUserID = auth?.currentUser?.uid ?: ""
-        val query = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends")
+        val query = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child("friendsList")
         val options = FirebaseRecyclerOptions.Builder<Candidate>().setQuery(query, Candidate::class.java).build()
 
         mainAdapter = FriendsAdapter(options)

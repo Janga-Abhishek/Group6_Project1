@@ -43,7 +43,7 @@ class CandidateAdapter (options: FirebaseRecyclerOptions<Candidate>)  : Firebase
         currentUserID = auth.currentUser?.uid ?: ""
         val candidateID = getRef(position).key
         val friendsReference =
-            FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends")
+            FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child("friendsList")
 
         friendsReference.child(candidateID!!).get().addOnSuccessListener {
             if (it.exists()) {

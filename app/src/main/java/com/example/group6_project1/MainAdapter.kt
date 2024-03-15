@@ -13,11 +13,7 @@ import com.google.firebase.storage.StorageReference
 
 class MainAdapter(options: FirebaseRecyclerOptions<Post>) :
     FirebaseRecyclerAdapter<Post, MainAdapter.MyViewHolder>(options) {
-    private val optionsList = mutableListOf<FirebaseRecyclerOptions<Post>>()
 
-    fun addOptions(options: FirebaseRecyclerOptions<Post>) {
-        optionsList.add(options)
-    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return MyViewHolder(inflater, parent)
