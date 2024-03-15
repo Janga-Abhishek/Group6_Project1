@@ -1,15 +1,24 @@
 package com.example.group6_project1
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
@@ -22,10 +31,10 @@ class DetailActivity : AppCompatActivity() {
     private var jobDetail: TextView? = null
     private var workExperienceDetail: TextView? = null
     private var educationDetail: TextView? = null
-
     private var currentUserID: String = ""
     private var candidateID: String = ""
     private var preferences: SharedPreferences? = null
+    private var detailAdapter: DetailAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +53,7 @@ class DetailActivity : AppCompatActivity() {
         val candidatePhoto = intent.getStringExtra("Photo")
         val candidateWorkExperience = intent.getStringExtra("WorkExperience")
         val candidateEducation = intent.getStringExtra("Education")
+
 
         userName?.text = candidateName
         jobDetail?.text = candidateJob
@@ -65,17 +75,53 @@ class DetailActivity : AppCompatActivity() {
         removeFriendBtn?.setOnClickListener {
             removeFriend()
         }
-
-        val connectionStatus = preferences?.getBoolean("Connection_$candidateID", false)
-        if (connectionStatus == true) {
-            connectBtn?.text = "Connected"
-            connectBtn?.isEnabled = false
-        } else {
-            removeFriendBtn?.text = "Remove Friend"
-            removeFriendBtn?.isEnabled = false
+        val connectionsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends")
+        connectionsRef.child(candidateID).get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                connectBtn?.text = "Connected"
+                connectBtn?.isEnabled = false
+            } else {
+                connectBtn?.text = "Connect"
+                connectBtn?.isEnabled = true
+                removeFriendBtn?.text = "Remove Friend"
+                removeFriendBtn?.isEnabled = false
+            }
+        }.addOnFailureListener { exception ->
+            Toast.makeText(this, "Failed to check connection status: ${exception.message}", Toast.LENGTH_SHORT).show()
         }
-    }
+//        val connectionStatus = preferences?.getBoolean("Connection_$candidateID", false)
+//        if (connectionStatus == true) {
+//            connectBtn?.text = "Connected"
+//            connectBtn?.isEnabled = false
+//        } else {
+//            removeFriendBtn?.text = "Remove Friend"
+//            removeFriendBtn?.isEnabled = false
+//        }
+        val backButton: ImageButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            onBackPressed()
+        }
+//        val postQuery = FirebaseDatabase.getInstance().reference.child(candidatePostsPath ?: "").child(currentUserID)
+//        val postOptions = FirebaseRecyclerOptions.Builder<Post>()
+//            .setQuery(postQuery, Post::class.java)
+//            .build()
+//        detailAdapter = DetailAdapter(postOptions)
+//
+//        val rView: RecyclerView = findViewById(R.id.rView)
+//        rView.layoutManager = LinearLayoutManager(this)
+//        rView.adapter = detailAdapter
 
+        val query = FirebaseDatabase.getInstance().reference.child("Candidates").child(candidateID).child("Posts")
+        Log.d("Query", query.toString())
+
+        val options = FirebaseRecyclerOptions.Builder<Post>().setQuery(query, Post::class.java).build()
+
+        detailAdapter = DetailAdapter(options)
+
+        val rView: RecyclerView = findViewById(R.id.rView)
+        rView.layoutManager = LinearLayoutManager(this)
+        rView.adapter = detailAdapter
+    }
     private fun addCandidateToFriends() {
         val friendsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends")
 
@@ -86,6 +132,11 @@ class DetailActivity : AppCompatActivity() {
         candidateDetails["Education"] = educationDetail?.text.toString()
         candidateDetails["Photo"] = intent.getStringExtra("Photo") ?: ""
 
+
+
+
+
+
         friendsRef.child(candidateID).setValue(candidateDetails)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -94,11 +145,57 @@ class DetailActivity : AppCompatActivity() {
                     connectBtn?.isEnabled = false
                     removeFriendBtn?.text = "Remove Friend"
                     removeFriendBtn?.isEnabled = true
+
+                    val postsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child(candidateID).child("FriendsPosts")
+                    val query = FirebaseDatabase.getInstance().reference.child("Candidates").child(candidateID).child("Posts")
+                    query.addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(dataSnapshot: DataSnapshot) {
+                            for (postSnapshot in dataSnapshot.children) {
+                                val postId = postSnapshot.key
+                                val post = postSnapshot.getValue(Post::class.java)
+                                if (postId != null && post != null) {
+                                    postsRef.child(postId).setValue(post)
+                                }
+                            }
+                        }
+                        override fun onCancelled(databaseError: DatabaseError) {
+                            // Handle error
+                        }
+                    })
                 } else {
                     Toast.makeText(this, "Failed to connect. Please try again.", Toast.LENGTH_SHORT).show()
                 }
             }
+
+        val intent = Intent(this, FriendsActivity::class.java)
+        startActivity(intent)
     }
+
+
+//    private fun addCandidateToFriends() {
+//        val friendsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends")
+//
+//        val candidateDetails = HashMap<String, Any>()
+//        candidateDetails["Name"] = userName?.text.toString()
+//        candidateDetails["Job"] = jobDetail?.text.toString()
+//        candidateDetails["WorkExperience"] = workExperienceDetail?.text.toString()
+//        candidateDetails["Education"] = educationDetail?.text.toString()
+//        candidateDetails["Photo"] = intent.getStringExtra("Photo") ?: ""
+//
+//
+//        friendsRef.child(candidateID).setValue(candidateDetails)
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    preferences?.edit()?.putBoolean("Connection_$candidateID", true)?.apply()
+//                    connectBtn?.text = "Connected"
+//                    connectBtn?.isEnabled = false
+//                    removeFriendBtn?.text = "Remove Friend"
+//                    removeFriendBtn?.isEnabled = true
+//                } else {
+//                    Toast.makeText(this, "Failed to connect. Please try again.", Toast.LENGTH_SHORT).show()
+//                }
+//            }
+//    }
 
     private fun removeFriend() {
         val friendsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends")
@@ -110,9 +207,34 @@ class DetailActivity : AppCompatActivity() {
                     connectBtn?.isEnabled = true
                     removeFriendBtn?.text = "Remove Friend"
                     removeFriendBtn?.isEnabled = false
+
+
+                    val friendsPostsRef = friendsRef.child("FriendsPosts")
+                    friendsPostsRef.child(candidateID).removeValue()
+                        .addOnCompleteListener { postTask ->
+                            if (postTask.isSuccessful) {
+                                // Friend's posts removed successfully
+                            } else {
+                                // Handle failure to remove friend's posts
+                                Log.e("RemoveFriendPosts", "Failed to remove friend's posts: ${postTask.exception}")
+                            }
+                        }
+
+
                 } else {
                     Toast.makeText(this, "Failed to remove friend. Please try again.", Toast.LENGTH_SHORT).show()
                 }
             }
+           }
+    override fun onStart() {
+        super.onStart()
+        detailAdapter?.startListening()
+        detailAdapter?.notifyDataSetChanged()
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        detailAdapter?.stopListening()
     }
 }

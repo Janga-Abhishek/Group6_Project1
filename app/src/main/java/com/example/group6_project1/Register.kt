@@ -3,6 +3,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -48,6 +49,10 @@ class Register : AppCompatActivity() {
         val btnRegister = findViewById<Button>(R.id.button_register)
         btnRegister.setOnClickListener {
             registerUser()
+        }
+        val backButton: ImageButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            onBackPressed()
         }
     }
     private fun selectCandidateImage() {

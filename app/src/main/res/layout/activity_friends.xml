@@ -45,44 +45,34 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/all_posts"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/yourConnections"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="110dp"
-            android:layout_marginEnd="10dp"
-            android:backgroundTint="@color/black"
-            android:text="Your Connections"
-            android:textColorHint="@color/black" />
-
-        <Button
-            android:id="@+id/writePost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/black"
-            android:text="write a post" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="All Posts"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:text="All Friends Posts" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="20dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="276dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="20dp"
+        android:text="Want To connect to more people please click the below button"
+        android:textAlignment="center" />
+
+    <Button
+        android:id="@+id/connectMore"
+        android:layout_width="189dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
+        android:backgroundTint="@android:color/holo_blue_dark"
+        android:text="Connect More" />
 
 
 </LinearLayout>
