@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="#f7d9c9"
+    android:orientation="vertical">
+
+    <!-- Image/logo -->
+
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="73dp"
+        android:background="@color/black">
+
+
+        <ImageView
+            android:id="@+id/ic_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="340dp"
+            android:layout_marginEnd="10dp"
+            app:srcCompat="@drawable/group6_logo" />
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/main_img"
+        android:layout_width="match_parent"
+        android:layout_height="196dp"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@drawable/group6_transparent" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="Welcome to Group6 Connects"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Click on the logo to start"
+        android:textSize="24sp" />
+
+
+</LinearLayout>
