@@ -49,7 +49,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:textAlignment="viewEnd">
 
         <Button
             android:id="@+id/yourConnections"
@@ -64,7 +66,7 @@
         <Button
             android:id="@+id/writePost"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:backgroundTint="@color/black"
             android:text="write a post" />
     </LinearLayout>
@@ -73,16 +75,29 @@
         android:id="@+id/textView15"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="2dp"
-        android:text="All Posts"
-        android:textSize="20sp"
+        android:layout_marginEnd="20dp"
+        android:text="All Friends Posts"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rView"
         android:layout_width="match_parent"
+        android:layout_height="454dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp" />
+
+    <Button
+        android:id="@+id/connect_more_main"
+        android:layout_width="352dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp" />
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/black"
+        android:text="Connect More" />
 
 
 </LinearLayout>

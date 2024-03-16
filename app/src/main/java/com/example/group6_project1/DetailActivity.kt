@@ -35,6 +35,7 @@ class DetailActivity : AppCompatActivity() {
     private var candidateID: String = ""
     private var preferences: SharedPreferences? = null
     private var detailAdapter: DetailAdapter? = null
+    private var noOfFriends: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,13 +48,13 @@ class DetailActivity : AppCompatActivity() {
         jobDetail = findViewById(R.id.job_detail)
         workExperienceDetail = findViewById(R.id.work_experience_detail)
         educationDetail = findViewById(R.id.education_detail)
+        noOfFriends = findViewById(R.id.friend_count)
 
         val candidateName = intent.getStringExtra("Name")
         val candidateJob = intent.getStringExtra("Job")
         val candidatePhoto = intent.getStringExtra("Photo")
         val candidateWorkExperience = intent.getStringExtra("WorkExperience")
         val candidateEducation = intent.getStringExtra("Education")
-
 
         userName?.text = candidateName
         jobDetail?.text = candidateJob
@@ -63,6 +64,7 @@ class DetailActivity : AppCompatActivity() {
         val storageReference: StorageReference? = candidatePhoto?.let { FirebaseStorage.getInstance().getReference("profile_images/$it") }
         storageReference?.let { Glide.with(this).load(it).into(candidateImageDetail!!) }
 
+
         val auth = FirebaseAuth.getInstance()
         currentUserID = auth.currentUser?.uid ?: ""
         candidateID = intent.getStringExtra("CandidateID") ?: ""
@@ -70,7 +72,7 @@ class DetailActivity : AppCompatActivity() {
 
         connectBtn?.setOnClickListener {
             addCandidateToFriends()
-        }
+         }
 
         removeFriendBtn?.setOnClickListener {
             removeFriend()
@@ -78,6 +80,7 @@ class DetailActivity : AppCompatActivity() {
         val connectionsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child("friendsList")
         connectionsRef.child(candidateID).get().addOnSuccessListener { snapshot ->
             if (snapshot.exists()) {
+
                 connectBtn?.text = "Connected"
                 connectBtn?.isEnabled = false
             } else {
@@ -111,6 +114,25 @@ class DetailActivity : AppCompatActivity() {
 //        rView.layoutManager = LinearLayoutManager(this)
 //        rView.adapter = detailAdapter
 
+
+        val currentUserFriendsRef = FirebaseDatabase.getInstance().reference
+            .child("Candidates")
+            .child(candidateID)
+            .child("friends")
+            .child("friendsList")
+
+        currentUserFriendsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val numberOfFriends = dataSnapshot.childrenCount.toInt()
+                // Update UI or perform any action with the number of friends
+                noOfFriends?.text = numberOfFriends.toString()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle error
+                Log.e("FriendsCount", "Failed to get friends count: ${databaseError.message}")
+            }
+        })
         val query = FirebaseDatabase.getInstance().reference.child("Candidates").child(candidateID).child("Posts")
         Log.d("Query", query.toString())
 
@@ -122,6 +144,7 @@ class DetailActivity : AppCompatActivity() {
         rView.layoutManager = LinearLayoutManager(this)
         rView.adapter = detailAdapter
     }
+
     private fun addCandidateToFriends() {
         val friendsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child("friendsList")
 

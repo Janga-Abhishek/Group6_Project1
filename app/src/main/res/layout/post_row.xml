@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp">
+        android:layout_marginEnd="10dp"
+        app:cardCornerRadius="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,39 +23,49 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="8dp">
 
                 <TextView
                     android:id="@+id/textView17"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Posted by: " />
+                    android:text="Posted by: "
+                    android:textSize="16sp"
+                    android:textColor="@android:color/black"/>
 
                 <TextView
                     android:id="@+id/candidateName_post_row"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/black"/>
             </LinearLayout>
 
             <TextView
                 android:id="@+id/textView19"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="------------------------------------------------------------------------------------------------------" />
+                android:text="---------------------------------------------------------------------------------------------" />
 
             <ImageView
                 android:id="@+id/imageView_post_row"
                 android:layout_width="match_parent"
-                android:layout_height="143dp"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"
                 app:srcCompat="@drawable/group6_transparent" />
 
             <TextView
                 android:id="@+id/content_post_row"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:padding="16dp"
+                android:text="TextView"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
