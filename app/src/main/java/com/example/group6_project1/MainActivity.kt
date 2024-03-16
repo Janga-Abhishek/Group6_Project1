@@ -60,7 +60,6 @@ class MainActivity : AppCompatActivity() {
         val options = FirebaseRecyclerOptions.Builder<Post>().setQuery(query, Post::class.java).build()
         mainAdapter = MainAdapter(options)
         rView.adapter = mainAdapter
-
     }
     override fun onStart() {
         super.onStart()
