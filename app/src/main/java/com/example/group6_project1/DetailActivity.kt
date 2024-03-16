@@ -72,7 +72,7 @@ class DetailActivity : AppCompatActivity() {
 
         connectBtn?.setOnClickListener {
             addCandidateToFriends()
-         }
+        }
 
         removeFriendBtn?.setOnClickListener {
             removeFriend()
