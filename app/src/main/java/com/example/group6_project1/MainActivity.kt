@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -22,6 +23,15 @@ class MainActivity : AppCompatActivity() {
         val showConnections: Button = findViewById(R.id.yourConnections)
         showConnections.setOnClickListener {
             val intent = Intent(this, FriendsActivity::class.java)
+            startActivity(intent)
+        }
+        val backButton: ImageButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            onBackPressed()
+        }
+        val connectMoreMain: Button = findViewById(R.id.connect_more_main)
+        connectMoreMain.setOnClickListener {
+            val intent = Intent(this, CandidateActivity::class.java)
             startActivity(intent)
         }
 
