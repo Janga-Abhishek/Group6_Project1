@@ -27,7 +27,6 @@ class CreatePostActivity : AppCompatActivity() {
     private var database: DatabaseReference? = null
     private var storage: FirebaseStorage? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
@@ -64,7 +63,7 @@ class CreatePostActivity : AppCompatActivity() {
             if (result.resultCode == RESULT_OK) {
                 val imageUri = result.data?.data
                 selectedImageUri = imageUri.toString()
-                Glide.with(this).load(imageUri).into(findViewById<ImageView>(R.id.post_image_view))
+                Glide.with(this).load(imageUri).into(findViewById(R.id.post_image_view))
             }
         }
     private fun getCandidateName(userId: String, callback: (String) -> Unit) {
@@ -95,7 +94,7 @@ class CreatePostActivity : AppCompatActivity() {
                         throw it
                     }
                 }
-                postRef?.child("Photo")?.setValue(imageName) // Store the path of the StorageReference
+                postRef?.child("Photo")?.setValue(imageName)
                 storageRef.downloadUrl
             }?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {

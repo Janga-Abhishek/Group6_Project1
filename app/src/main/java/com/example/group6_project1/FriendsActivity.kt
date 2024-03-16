@@ -46,10 +46,10 @@ class FriendsActivity : AppCompatActivity() {
         val options = FirebaseRecyclerOptions.Builder<Candidate>().setQuery(query, Candidate::class.java).build()
 
         mainAdapter = FriendsAdapter(options)
-
         val rView: RecyclerView = findViewById(R.id.rView)
         rView.layoutManager = LinearLayoutManager(this)
         rView.adapter = mainAdapter
+
         val backButton: ImageButton = findViewById(R.id.back_button)
         backButton.setOnClickListener {
             onBackPressed()

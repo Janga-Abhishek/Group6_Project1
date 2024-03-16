@@ -64,7 +64,6 @@ class DetailActivity : AppCompatActivity() {
         val storageReference: StorageReference? = candidatePhoto?.let { FirebaseStorage.getInstance().getReference("profile_images/$it") }
         storageReference?.let { Glide.with(this).load(it).into(candidateImageDetail!!) }
 
-
         val auth = FirebaseAuth.getInstance()
         currentUserID = auth.currentUser?.uid ?: ""
         candidateID = intent.getStringExtra("CandidateID") ?: ""
@@ -124,22 +123,17 @@ class DetailActivity : AppCompatActivity() {
         currentUserFriendsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val numberOfFriends = dataSnapshot.childrenCount.toInt()
-                // Update UI or perform any action with the number of friends
                 noOfFriends?.text = numberOfFriends.toString()
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                // Handle error
                 Log.e("FriendsCount", "Failed to get friends count: ${databaseError.message}")
             }
         })
         val query = FirebaseDatabase.getInstance().reference.child("Candidates").child(candidateID).child("Posts")
-        Log.d("Query", query.toString())
-
+        //Log.d("Query", query.toString())
         val options = FirebaseRecyclerOptions.Builder<Post>().setQuery(query, Post::class.java).build()
-
         detailAdapter = DetailAdapter(options)
-
         val rView: RecyclerView = findViewById(R.id.rView)
         rView.layoutManager = LinearLayoutManager(this)
         rView.adapter = detailAdapter
@@ -181,13 +175,12 @@ class DetailActivity : AppCompatActivity() {
                         }
                     })
                 } else {
-                    Toast.makeText(this, "Failed to connect. Please try again.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Failed to connect.", Toast.LENGTH_SHORT).show()
                 }
             }
-
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("candidateID", candidateID)
-        startActivity(intent)
+//        val intent = Intent(this, MainActivity::class.java)
+//        intent.putExtra("candidateID", candidateID)
+//        startActivity(intent)
     }
 
 
@@ -215,7 +208,6 @@ class DetailActivity : AppCompatActivity() {
 //                }
 //            }
 //    }
-
     private fun removeFriend() {
         val friendsRef = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child("friendsList")
         friendsRef.child(candidateID).removeValue()
@@ -237,28 +229,25 @@ class DetailActivity : AppCompatActivity() {
                                         for (postSnapshot in dataSnapshot.children) {
                                             val postId = postSnapshot.key
                                             val postRef = query.child(postId!!)
-                                            Log.d("PostRef", postRef.toString())
+                                            //Log.d("PostRef", postRef.toString())
                                             val candidateIdValue = postSnapshot.child("candidateId").getValue(String::class.java)
                                             if (candidateIdValue == candidateID) {
                                                 postRef.removeValue()
                                             }
                                         }
                                     }
-
                                     override fun onCancelled(databaseError: DatabaseError) {
-                                        // Handle error
                                     }
                                 })
-                                val intent = Intent(this, MainActivity::class.java)
-                                intent.putExtra("candidateID", candidateID)
-                                startActivity(intent)
+//                                val intent = Intent(this, MainActivity::class.java)
+//                                intent.putExtra("candidateID", candidateID)
+//                                startActivity(intent)
                             } else {
-                                // Handle failure to remove friend's posts
-                                Log.e("RemoveFriendPosts", "Failed to remove friend's posts: ${postTask.exception}")
+                                Log.e("RemoveFriendPosts", "Failed to remove Friend's Posts: ${postTask.exception}")
                             }
                         }
                 } else {
-                    Toast.makeText(this, "Failed to remove friend. Please try again.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Failed to Remove Friend.", Toast.LENGTH_SHORT).show()
                 }
             }
     }
@@ -268,7 +257,6 @@ class DetailActivity : AppCompatActivity() {
         detailAdapter?.notifyDataSetChanged()
 
     }
-
     override fun onStop() {
         super.onStop()
         detailAdapter?.stopListening()

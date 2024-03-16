@@ -28,7 +28,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginStart="100dp"
+            android:layout_marginStart="280dp"
             android:layout_marginEnd="10dp"
             app:srcCompat="@drawable/group6_logo" />
 
@@ -46,6 +46,32 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:textAlignment="viewEnd">
+
+        <Button
+            android:id="@+id/yourConnections"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="390dp"
+            android:layout_marginEnd="10dp"
+            android:backgroundTint="@color/black"
+            android:text="Your Connections"
+            android:textColorHint="@color/black" />
+
+        <Button
+            android:id="@+id/writePost"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/black"
+            android:text="write a post" />
+    </LinearLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
@@ -55,38 +81,30 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/all_posts"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp"
-                android:backgroundTint="@color/black"
-                android:text="All Friends Posts" />
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="20dp"
+                android:text="All Friends Posts"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="15dp" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="276dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="55dp"
-                android:layout_marginTop="20dp"
-                android:text="Want To connect to more people please click the below button"
-                android:textAlignment="center" />
+                android:layout_height="200dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp" />
 
             <Button
-                android:id="@+id/connectMore"
-                android:layout_width="189dp"
+                android:id="@+id/connect_more_main"
+                android:layout_width="352dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="90dp"
-                android:backgroundTint="@android:color/holo_blue_dark"
+                android:layout_marginStart="190dp"
+                android:backgroundTint="@color/black"
                 android:text="Connect More" />
         </LinearLayout>
     </ScrollView>

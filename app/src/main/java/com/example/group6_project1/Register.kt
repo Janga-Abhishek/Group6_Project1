@@ -45,7 +45,6 @@ class Register : AppCompatActivity() {
         btnChooseImage.setOnClickListener {
             selectCandidateImage()
         }
-
         val btnRegister = findViewById<Button>(R.id.button_register)
         btnRegister.setOnClickListener {
             registerUser()

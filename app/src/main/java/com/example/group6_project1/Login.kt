@@ -11,13 +11,11 @@ import com.google.firebase.auth.FirebaseAuth
 class Login : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         auth = FirebaseAuth.getInstance()
-
         if (auth.currentUser != null) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -58,7 +56,6 @@ class Login : AppCompatActivity() {
                 }
         }
     }
-
     private fun validateInputs(email: String, password: String): Boolean {
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()

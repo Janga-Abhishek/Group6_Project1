@@ -17,9 +17,9 @@ class FriendsAdapter (options: FirebaseRecyclerOptions<Candidate>) :
     FirebaseRecyclerAdapter<Candidate, FriendsAdapter.MyViewHolder>(options) {
     private val candidateIds = mutableListOf<String>()
 
-    fun getCandidateIds(): List<String> {
-        return candidateIds
-    }
+//    fun getCandidateIds(): List<String> {
+//        return candidateIds
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -51,8 +51,6 @@ class FriendsAdapter (options: FirebaseRecyclerOptions<Candidate>) :
 
             holder.itemView.context.startActivity(intent)
         }
-
-
     }
     class MyViewHolder(inflater : LayoutInflater, parent: ViewGroup)
         : RecyclerView.ViewHolder(inflater.inflate(R.layout.candidate_row,parent,false))

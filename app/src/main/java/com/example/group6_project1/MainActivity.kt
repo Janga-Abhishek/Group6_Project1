@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, CandidateActivity::class.java)
             startActivity(intent)
         }
-
         val createPost: Button = findViewById(R.id.writePost)
         createPost.setOnClickListener {
             val intent = Intent(this, CreatePostActivity::class.java)
@@ -47,34 +46,27 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
         auth = FirebaseAuth.getInstance()
         currentUserID = auth?.currentUser?.uid ?: ""
 
         val rView: RecyclerView = findViewById(R.id.rView)
         rView.layoutManager = LinearLayoutManager(this)
 
-        val intent = intent
-        val candidateID = intent.getStringExtra("candidateID")
+//        val intent = intent
+//        val candidateID = intent.getStringExtra("candidateID")
 
-        // Update this path to point to your posts
         val query = FirebaseDatabase.getInstance().reference.child("Candidates").child(currentUserID).child("friends").child("FriendsPosts")
-        Log.d("Query", query.toString())
-
+//        Log.d("Query", query.toString())
         val options = FirebaseRecyclerOptions.Builder<Post>().setQuery(query, Post::class.java).build()
-
-
         mainAdapter = MainAdapter(options)
         rView.adapter = mainAdapter
-    }
 
+    }
     override fun onStart() {
         super.onStart()
         mainAdapter?.startListening()
         mainAdapter?.notifyDataSetChanged()
-
     }
-
     override fun onStop() {
         super.onStop()
         mainAdapter?.stopListening()

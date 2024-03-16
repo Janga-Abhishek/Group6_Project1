@@ -18,11 +18,9 @@ class MainAdapter(options: FirebaseRecyclerOptions<Post>) :
         val inflater = LayoutInflater.from(parent.context)
         return MyViewHolder(inflater, parent)
     }
-
     override fun onBindViewHolder(holder: MyViewHolder, position: Int, model: Post) {
         holder.bind(model)
     }
-
     class MyViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         RecyclerView.ViewHolder(inflater.inflate(R.layout.post_row, parent, false)) {
         private val txtName: TextView = itemView.findViewById(R.id.candidateName_post_row)
@@ -32,7 +30,6 @@ class MainAdapter(options: FirebaseRecyclerOptions<Post>) :
         fun bind(post: Post) {
             txtName.text = post.CandidateName
             txtContent.text = post.Content
-
             val storageReference: StorageReference =
                 FirebaseStorage.getInstance().getReference("post_images/${post.Photo}")
             Glide.with(itemView.context).load(storageReference).into(imageView)

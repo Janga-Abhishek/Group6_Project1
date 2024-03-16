@@ -38,7 +38,6 @@ class CandidateAdapter (options: FirebaseRecyclerOptions<Candidate>)  : Firebase
             FirebaseStorage.getInstance().getReference("profile_images/${model.Photo}")
         Glide.with(holder.imageView.context).load(storageReference).into(holder.imageView)
 
-
         var auth = FirebaseAuth.getInstance()
         currentUserID = auth.currentUser?.uid ?: ""
         val candidateID = getRef(position).key
