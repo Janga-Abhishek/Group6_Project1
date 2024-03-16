@@ -171,7 +171,6 @@ class DetailActivity : AppCompatActivity() {
                             }
                         }
                         override fun onCancelled(databaseError: DatabaseError) {
-                            // Handle error
                         }
                     })
                 } else {

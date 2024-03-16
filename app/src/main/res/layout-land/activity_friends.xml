@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="73dp"
         android:background="@color/black">
+
         <ImageButton
             android:id="@+id/back_button"
             android:layout_width="wrap_content"
@@ -45,38 +46,49 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/all_posts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:backgroundTint="@color/black"
-        android:text="All Friends Posts" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="15dp" />
+        android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="463dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="110dp"
-        android:text="Want To connect to more people please click the below button"
-        android:textAlignment="center" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/connectMore"
-        android:layout_width="189dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="275dp"
-        android:backgroundTint="@android:color/holo_blue_dark"
-        android:text="Connect More" />
+            <Button
+                android:id="@+id/all_posts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:backgroundTint="@color/black"
+                android:text="All Friends Posts" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="15dp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="463dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="110dp"
+                android:text="Want To connect to more people please click the below button"
+                android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/connectMore"
+                android:layout_width="189dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="275dp"
+                android:backgroundTint="@android:color/holo_blue_dark"
+                android:text="Connect More" />
+        </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>
